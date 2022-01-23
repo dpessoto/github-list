@@ -2,21 +2,30 @@ import br.com.pessoto.Libs
 import br.com.pessoto.Versions
 
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlinx-serialization'
 }
 
 android {
     compileSdk Versions.compileSdkVersion
 
     defaultConfig {
-        applicationId "br.com.pessoto.githublist"
         minSdk Versions.minSdkVersion
         targetSdk Versions.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true",
+                        "room.expandProjection":"true"]
+            }
+        }
     }
 
     buildTypes {
@@ -24,17 +33,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            applicationIdSuffix ".debug"
-            debuggable true
-        }
     }
-
-    buildFeatures {
-        dataBinding = true
-        viewBinding = true
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -47,22 +46,28 @@ android {
 dependencies {
     implementation project(':core')
     implementation project(':domain')
-    implementation project(':data')
 
     implementation Libs.Kotlin.stdlib
     implementation Libs.Coroutines.android
     implementation Libs.Coroutines.core
 
-    implementation Libs.AndroidX.coreKtx
-    implementation Libs.AndroidX.Lifecycle.lifecycle
-    implementation Libs.Material.material
-
-    // Work Manager
-    implementation Libs.AndroidX.workManager
-
     // Firebase
     implementation platform(Libs.Firebase.bom)
     implementation Libs.Firebase.remoteConfig
+
+    // Room
+    implementation Libs.AndroidX.Room.runtime
+    kapt Libs.AndroidX.Room.compiler
+    implementation Libs.AndroidX.Room.ktx
+
+    // Okhttp
+    implementation Libs.Network.retrofit
+    implementation Libs.Network.okHttp
+    implementation Libs.Network.kotlinSerializationConverter
+    implementation Libs.Serialization.kotlinSerialization
+
+    // Work Manager
+    implementation Libs.AndroidX.workManager
 
     // Koin
     implementation Libs.Koin.android
@@ -71,10 +76,9 @@ dependencies {
 
     testImplementation Libs.Test.junit
     androidTestImplementation Libs.Test.Ext.junit
-    androidTestImplementation Libs.Test.espressoCore
     testImplementation Libs.Coroutines.test
     testImplementation Libs.Test.mockk
     testImplementation Libs.Test.core
     testImplementation Libs.Koin.test
-    androidTestImplementation Libs.Test.androidJunit
+    testImplementation Libs.Test.turbine
 }

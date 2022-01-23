@@ -8,3 +8,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Github List"
 include ':app'
+include ':core'
+include ':domain'
+include ':data'
