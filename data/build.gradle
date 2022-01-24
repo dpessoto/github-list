@@ -18,6 +18,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
+        buildConfigField "String", "BASE_URL", "\"https://api.github.com/\""
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += [
@@ -62,6 +64,7 @@ dependencies {
 
     // Okhttp
     implementation Libs.Network.retrofit
+    implementation Libs.Network.retrofitConverterGson
     implementation Libs.Network.okHttp
     implementation Libs.Network.kotlinSerializationConverter
     implementation Libs.Serialization.kotlinSerialization

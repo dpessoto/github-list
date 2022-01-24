@@ -55,6 +55,7 @@ object Libs {
         private const val okHttpVersion = "4.9.1"
 
         const val retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
+        const val retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
         const val okHttp = "com.squareup.okhttp3:okhttp:$okHttpVersion"
         const val kotlinSerializationConverter =
             "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"

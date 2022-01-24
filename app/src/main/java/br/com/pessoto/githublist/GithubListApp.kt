@@ -2,6 +2,7 @@ package br.com.pessoto.githublist
 
 import android.app.Application
 import br.com.pessoto.core.di.coreModule
+import br.com.pessoto.di.dataModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
@@ -16,7 +17,7 @@ class GithubListApp : Application() {
     private fun startKoin() {
         startKoin {
             androidContext(this@GithubListApp)
-            loadKoinModules(coreModule)
+            loadKoinModules(coreModule + dataModule)
         }
     }
 }
